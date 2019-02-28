@@ -1,0 +1,130 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="CatsModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="CatsModelStoreContainer">
+    <EntitySet Name="OwnersSet" EntityType="CatsModel.Store.OwnersSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="CatsSet" EntityType="CatsModel.Store.CatsSet" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="OwnersCats" Association="CatsModel.Store.OwnersCats">
+      <End Role="Owners" EntitySet="OwnersSet" />
+      <End Role="Cats" EntitySet="CatsSet" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="OwnersSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Surname" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CatsSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Age" Type="int" Nullable="false" />
+    <Property Name="Owner_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="OwnersCats">
+    <End Role="Owners" Type="CatsModel.Store.OwnersSet" Multiplicity="1" />
+    <End Role="Cats" Type="CatsModel.Store.CatsSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Owners">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Cats">
+        <PropertyRef Name="Owner_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="CatsModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+        <EntityContainer Name="CatsModelContainer" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="OwnersSet" EntityType="CatsModel.Owners" />
+          <EntitySet Name="CatsSet" EntityType="CatsModel.Cats" />
+          <AssociationSet Name="OwnersCats" Association="CatsModel.OwnersCats">
+            <End Role="Owners" EntitySet="OwnersSet" />
+            <End Role="Cats" EntitySet="CatsSet" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Owners">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Surname" Type="String" Nullable="false" />
+          <NavigationProperty Name="Cats" Relationship="CatsModel.OwnersCats" FromRole="Owners" ToRole="Cats" />
+        </EntityType>
+        <EntityType Name="Cats">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" />
+          <Property Name="Age" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Owner" Relationship="CatsModel.OwnersCats" FromRole="Cats" ToRole="Owners" />
+        </EntityType>
+        <Association Name="OwnersCats">
+          <End Type="CatsModel.Owners" Role="Owners" Multiplicity="1" />
+          <End Type="CatsModel.Cats" Role="Cats" Multiplicity="*" />
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="CatsModelStoreContainer" CdmEntityContainer="CatsModelContainer">
+    <EntitySetMapping Name="OwnersSet">
+      <EntityTypeMapping TypeName="IsTypeOf(CatsModel.Owners)">
+        <MappingFragment StoreEntitySet="OwnersSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Surname" ColumnName="Surname" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CatsSet">
+      <EntityTypeMapping TypeName="IsTypeOf(CatsModel.Cats)">
+        <MappingFragment StoreEntitySet="CatsSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Age" ColumnName="Age" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="OwnersCats" TypeName="CatsModel.OwnersCats" StoreEntitySet="CatsSet">
+      <EndProperty Name="Owners">
+        <ScalarProperty Name="Id" ColumnName="Owner_Id" />
+      </EndProperty>
+      <EndProperty Name="Cats">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
